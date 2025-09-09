@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bi-vertisseur</title>
+</head>
+<style>
+body {
+    background-color:#1e1e1e;
+    color:#f0f0f0;
+    font-family:Consolas, monospace;
+    padding:20px;
+}
+
+header h1, header h2, header p {
+    text-align:center;
+    margin:0.5em;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.box1, .box2 {
+    width: 35em;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.box2 {
+    margin-top: 2em;
+}
+
+.box1 p, .box1 input, .box1 #result, .box2 input {
+    padding: 10px;
+    background-color:#2c2c2c;
+    color:#f0f0f0;
+    border:1px solid #f0f0f0;
+    border-radius:6px;
+    height: 3em;
+    margin: 0;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family:Consolas, monospace;
+}
+
+button {
+    padding:10px;
+    background-color:#2c2c2c;
+    color:#f0f0f0;
+    border:1px solid #f0f0f0;
+    border-radius:6px;
+    width: 16em;
+    height: 4.5em;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    margin: 2rem auto 0 auto;
+    display: block;
+    font-family:Consolas, monospace;
+}
+button:hover {
+    transform: translateY(-3px);
+    background-color:#171717;
+}
+
+#invert {
+    margin-top: 4rem;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+</style>
+<script>
+function convert(action) {
+    const buttonconvert = document.getElementById('convert');
+    const buttonconvertback = document.getElementById('convertback');
+    const input = document.getElementById('inputnum');
+    const result_box = document.querySelector('#result');
+    const input2 = document.getElementById('inputbase');
+    let value = input.value.trim();
+    let base = input2.value.trim();
+
+    if (value === "") {
+        result_box.textContent = "Veuillez entrer un nombre !";
+        result_box.style.color = "red";
+    } else if (base === "") {
+        result_box.textContent = "Veuillez entrer une base pour convertir !";
+        result_box.style.color = "red";
+    } else if (base < 2 || base > 36) {
+        result_box.textContent = "Veuillez entrer une base comprise entre 2 et 36 !";
+        result_box.style.color = "red";
+    } else if (value < 0) {
+        result_box.textContent = "Veuillez entrer un nombre supérieur ou egal à 0 !";
+        result_box.style.color = "red";
+    } else if (value === "0") {
+        result_box.textContent = "0";
+        result_box.style.color = "white";
+    } else {
+        try {
+            if (action === "invert") {
+            const digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let result = 0n;
+            let len = value.length;
+
+            for (let i = 0; i < len; i++) {
+                let char = value[len - i - 1].toUpperCase();
+                let digit = digits.indexOf(char);
+
+                if (digit === -1 || digit >= Number(base)) {
+                    result_box.textContent = `Caractère invalide "${char}" pour la base ${base}`;
+                    result_box.style.color = "red";
+                    return;
+                }
+
+                result += BigInt(digit) * (BigInt(base) ** BigInt(i));
+            }
+
+            result_box.textContent = result;
+            result_box.style.color = "white";
+            
+            buttonconvertback.textContent = "Nombre converti !";
+            setTimeout(() => buttonconvertback.textContent = "Revenir base 10 !", 1000);
+        } else {
+                let num = BigInt(value);
+                const digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                let result = "";
+                while (num > 0n) {
+                    let remainder = num % BigInt(base);
+                    result = digits[Number(remainder)] + result;
+                    num = num / BigInt(base);
+                }
+
+                result_box.textContent = result;
+                result_box.style.color = "white";
+                
+                buttonconvert.textContent = "Nombre converti !";
+
+                setTimeout(() => buttonconvert.textContent = "Convertir !", 1000);
+            }
+        } catch(e) {
+            result_box.textContent = "Erreur lors de la conversion : " + e
+            result_box.style.color = "red"
+        }
+    }
+}
+
+function invert() {
+    const input = document.querySelector('input');
+    const result_box = document.querySelector('#result');
+    const button = document.getElementById('invert');
+
+    const errorMessages = [
+    "Veuillez entrer un nombre !",
+    "Veuillez entrer une base pour convertir !",
+    "Veuillez entrer une base comprise entre 2 et 36 !",
+    "Veuillez entrer un nombre supérieur ou egal à 0 !",
+    "Apparaîtra ici votre résultat",
+    ];
+
+    if (
+        !errorMessages.includes(result_box.textContent) &&
+        !result_box.textContent.startsWith("Caractère invalide") &&
+        !result_box.textContent.startsWith("Erreur lors de la conversion")
+    ) {
+        input.value = result_box.textContent;
+    } else {
+        input.value = "";
+        result_box.textContent = "Apparaîtra ici votre résultat";
+        result_box.style.color = "gray";
+        return;
+    }
+    result_box.textContent = "Apparaîtra ici votre résultat";
+    result_box.style.color = "gray";
+
+    button.textContent = "Résultat repris";
+
+    setTimeout(() => button.textContent = "Reprendre le résultat !", 1000);
+}
+</script>
+<body>
+    <header>
+        <h1>⚙️ Bienvenue sur le Bi-vertisseur ⚙️</h1>
+        <h2>Le convertisseur de base 10 en base n...</h2>
+        <h2>...et de base n en base 10</h2>
+        <br>
+        <p>⚠️ Attention, le Bi-vertisseur ne peut pas convertir des nombres negatifs ! ⚠️</p>
+        <p>⚠️ Attention, Les bases converties vont de 2 à 36 ! ⚠️</p>
+        <br>
+        <p>⚠️ Pour revenir en base 10, il faudra entrer dans la case base la base actuelle de votre nombre et non la base 10 ⚠️</p>
+        <p>⚠️ Néanmoins, pour la conversion de base 10 en base n, il faudra entrer le base souhaitée dans la case base ⚠️</p>
+        <p><br>Exemples : <br> Pour convertir (15)₁₀ en (1111)₂ il faudra entrer 15 dans la case nombre et 2 dans la case base puis cliquer sur "Convertir !". <br> Pour convertir (1111)₂ en (15)₁₀ il faudra entrer 1111 dans la case nombre et <span style="color:orange;">2 dans la case base</span> puis cliquer sur "Revenir base 10 !".</p>
+    </header>
+
+    <main class="container">
+        <div class="box1">
+            <p>Voici ici le nombre que vous donnerez à convertir :</p>
+            <input placeholder="Entrez votre nombre à convertir !" type="text" id="inputnum">
+            <input type="number" min="2" max="36" placeholder="Entrez votre base !" id="inputbase">
+        </div>
+
+        <div class="box1">
+            <p>Et apparaîtra ici votre nombre converti :</p>
+            <p id="result" style="color: gray;">Apparaîtra ici votre résultat</p>
+        </div>
+    </main>
+
+    <main class="container">
+        <div class="box1">
+            <button onclick="convert('convert')" id="convert">Convertir !</button>
+        </div>
+        <div class="box1">
+            <button onclick="convert('invert')" id="convertback">Revenir base 10 !</button>
+        </div>
+    </main>
+    <button onclick="invert()" id="invert">Reprendre le résultat !</button>
+</body>
+</html>
