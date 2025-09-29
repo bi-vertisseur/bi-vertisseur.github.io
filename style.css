@@ -40,7 +40,7 @@ header p {
     color:#f0f0f0;
     border:1px solid #f0f0f0;
     border-radius:6px;
-    height: 6vh;
+    aspect-ratio: 15/1;
     margin: 0;
     font-size: 1vw;
     display: flex;
@@ -79,4 +79,5 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+
 }
