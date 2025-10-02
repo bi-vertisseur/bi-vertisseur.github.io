@@ -18,6 +18,17 @@ header p {
     font-size: 1vw;
 }
 
+.tuto {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 2s ease, opacity 1s ease;
+}
+.tuto.show {
+    opacity: 1;   
+    max-height: 100vh;
+}
+
 .container {
     display: flex;
     flex-wrap: wrap;
@@ -69,10 +80,6 @@ button {
 button:hover {
     transform: translateY(-0.4vh);
     background-color:#171717;
-}
-
-#invert {
-    margin-top: 5vh;
 }
 
 input::-webkit-outer-spin-button,
