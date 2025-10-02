@@ -10,15 +10,18 @@
 <body>
     <header>
         <h1>⚙️ Bienvenue sur le Bi-vertisseur ⚙️</h1>
-        <h2>Le convertisseur de base 10 en base n...</h2>
-        <h2>...et de base n en base 10</h2>
-        <br>
-        <p>⚠️ Attention, le Bi-vertisseur ne peut pas convertir des nombres negatifs ! ⚠️</p>
-        <p>⚠️ Attention, Les bases converties vont de 2 à 36 ! ⚠️</p>
-        <br>
-        <p>⚠️ Pour revenir en base 10, il faudra entrer dans la case base la base actuelle de votre nombre et non la base 10 ⚠️</p>
-        <p>⚠️ Néanmoins, pour la conversion de base 10 en base n, il faudra entrer le base souhaitée dans la case base ⚠️</p>
-        <p><br>Exemples : <br> Pour convertir 15 (base 10) en 1111 (base 2) il faudra entrer 15 dans la case nombre et 2 dans la case base puis cliquer sur "Convertir !". <br> Pour convertir 1111 (base 2) en 15 (base 10) il faudra entrer 1111 dans la case nombre et <span style="color:orange;">2 dans la case base</span> puis cliquer sur "Revenir base 10 !".</p>
+        <h2>✨ Le convertisseur de bases ✨</h2>
+        <button onclick="showTuto()" id="tutoBtn">Montrer les conseils !</button>
+        <div class="tuto">
+            <br>
+            <p>⚠️ Attention, le Bi-vertisseur ne peut pas convertir des nombres negatifs ! ⚠️</p>
+            <p>⚠️ Attention, Les bases converties vont de 2 à 36 ! ⚠️</p>
+            <br>
+            <p>⚠️ Pour revenir en base 10, il faudra entrer dans la case base la base actuelle de votre nombre et non la base 10 ⚠️</p>
+            <p>⚠️ Néanmoins, pour la conversion de base 10 en base n, il faudra entrer le base souhaitée dans la case base ⚠️</p>
+            <p>⚠️ Enfin, pour la conversion de base X en base 16, il faudra donner votre nombre en base X, sa base dans la case base, et cliquer sur "Convertir base X en base 16 !" ⚠️</p>
+            <p><br>Exemples : <br> Pour convertir 15 (base 10) en 1111 (base 2) il faudra entrer 15 dans la case nombre et 2 dans la case base puis cliquer sur "Convertir !". <br> Pour convertir 1111 (base 2) en 15 (base 10) il faudra entrer 1111 dans la case nombre et <span style="color:orange;">2 dans la case base</span> puis cliquer sur "Revenir base 10 !". <br>Pour convertir 1111 (base 2) en F (base 16), il faudra entrer 1111 dans la case nombre et 2 dans la case base puis cliquer sur "Convertir base X en base 16 !"</p>
+        </div>
     </header>
 
     <main class="container">
@@ -31,6 +34,7 @@
         <div class="box">
             <p>Et apparaîtra ici votre nombre converti :</p>
             <p id="result" style="color: gray;">Apparaîtra ici votre résultat</p>
+            <button onclick="reset()" id="reset">Remettre tout à zéro !</button>
         </div>
     </main>
 
@@ -42,6 +46,14 @@
             <button onclick="convert('invert')" id="convertback">Revenir base 10 !</button>
         </div>
     </main>
-    <button onclick="invert()" id="invert">Reprendre le résultat !</button>
+
+    <main class="container">
+        <div class="box">
+            <button onclick="invert()" id="invert">Reprendre le résultat !</button>
+        </div>
+        <div class="box">
+            <button onclick="convert16()" id="convert16">Convertir base X en base 16 !</button>
+        </div>
+    </main>
 </body>
 </html>
